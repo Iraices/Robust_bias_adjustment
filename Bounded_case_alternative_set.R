@@ -83,8 +83,22 @@ for(i in 1:nrows){
 ## We are interested in the values inside the polyhedron
 solutions_unique <- unique(solutions_revised[-c(n_NaN),1:3])
 
+
+## selecting the vertices that satisfies the conditions
+solutions_unique_conditions <- c()
+
+for(i in 1:dim(solutions_unique)[1]){
+  q_1 = solutions_unique[i,][1]
+  q_3 = solutions_unique[i,][2]
+  q_4 = solutions_unique[i,][3]
+  if(q_1 >= 0.6 & q_1 <= 1 & q_3 >=0 & q_3 <= q_1 & q_4 >=0 & q_4 <= 1){
+  solutions_unique_conditions <- rbind(solutions_unique_conditions, solutions_unique[i,])
+  }
+}
+solutions_unique_conditions
+  
 ## number of vertices
-num_alphas <- dim(solutions_unique)[1]
+num_alphas <- dim(solutions_unique_conditions)[1]
 
 all_points <- c()
 ## points in the convex set
@@ -113,20 +127,15 @@ for(i in 1:L1){
             alpha_7 <- seq(0,1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l] - alpha_6[n], by = 0.1)
             L7 <- length(alpha_7)  
             for(v in 1:L7){
-              alpha_8 <- seq(0,1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l] - alpha_6[n] - alpha_7[v], by = 0.1)
-              L8 <- length(alpha_8)
-              for(w in 1:L8){
-                alpha_9 <- 1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l] - alpha_6[n] - alpha_7[v] - alpha_8[w]
+              alpha_8 <- 1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l] - alpha_6[n] - alpha_7[v]
 
-                p <- alpha_1[i]* as.numeric(solutions_unique[1,]) + alpha_2[j]* as.numeric(solutions_unique[2,]) +
-                     alpha_3[k]* as.numeric(solutions_unique[3,]) + alpha_4[m]* as.numeric(solutions_unique[4,]) +
-                     alpha_5[l]* as.numeric(solutions_unique[5,]) + alpha_6[n]* as.numeric(solutions_unique[6,]) +
-                     alpha_7[v]* as.numeric(solutions_unique[7,]) + alpha_8[w]* as.numeric(solutions_unique[8,]) +
-                     alpha_9 * as.numeric(solutions_unique[9,])
+              p <- alpha_1[i]* as.numeric(solutions_unique[1,]) + alpha_2[j]* as.numeric(solutions_unique[2,]) +
+                   alpha_3[k]* as.numeric(solutions_unique[3,]) + alpha_4[m]* as.numeric(solutions_unique[4,]) +
+                   alpha_5[l]* as.numeric(solutions_unique[5,]) + alpha_6[n]* as.numeric(solutions_unique[6,]) +
+                   alpha_7[v]* as.numeric(solutions_unique[7,]) + alpha_8 * as.numeric(solutions_unique[8,])
         
-                if(p[1] >= 0.6 & p[2] > 0 & p[3] > 0){
-                  all_points <- rbind(all_points, p)
-                }
+              if(p[1] >= 0.6 & p[2] > 0 & p[3] > 0){
+                all_points <- rbind(all_points, p)
               }
             }
           }

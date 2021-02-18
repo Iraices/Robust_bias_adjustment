@@ -43,27 +43,6 @@ unadjusted_bias_model <- run.jags('bias_adjusted_model_150121.txt',
 
 unadjusted_bias_model
 
-#############################################################
-
-##Adjusted bias model
-
-adjusted_bias_model <- run.jags('bias_adjusted_model_150121.txt', 
-                                data = list(n_studies = 4,
-                                            N = sample_size,
-                                            obs = obs,
-                                            q = c(1,1,0.5,0.5),
-                                            mu_mu = 0,
-                                            sigma2_mu = 1,
-                                            mu_beta = 0,
-                                            sigma2_beta = 100,
-                                            alpha = 1,
-                                            lambda = 1),
-                                monitor = parameters, 
-                                n.chains = 2, burnin = 5000, 
-                                sample = 15000, method = 'rjags')
-
-adjusted_bias_model     
-
 #######################################################################################
 ## Forestplot
 ## Log Odds ratio
@@ -88,28 +67,6 @@ estimated_upper_ci_unadjusted_model = c(unadjusted_bias_model$summary$quantiles[
                                         unadjusted_bias_model$summary$quantiles['delta[4]', '97.5%'],
                                         unadjusted_bias_model$summary$quantiles['mu', '97.5%'])
 
-#################################################################################################
-
-estimated_mean_adjusted_model = c(adjusted_bias_model$summary$statistics['delta[1]','Mean'],
-                                  adjusted_bias_model$summary$statistics['delta[2]','Mean'],
-                                  adjusted_bias_model$summary$statistics['delta[3]','Mean'],
-                                  adjusted_bias_model$summary$statistics['delta[4]','Mean'], 
-                                  adjusted_bias_model$summary$statistics['mu','Mean'])
-
-
-estimated_lower_ci_adjusted_model = c(adjusted_bias_model$summary$quantiles['delta[1]', '2.5%'],
-                                      adjusted_bias_model$summary$quantiles['delta[2]', '2.5%'],
-                                      adjusted_bias_model$summary$quantiles['delta[3]', '2.5%'],
-                                      adjusted_bias_model$summary$quantiles['delta[4]', '2.5%'],
-                                      adjusted_bias_model$summary$quantiles['mu', '2.5%'])
-
-
-estimated_upper_ci_adjusted_model = c(adjusted_bias_model$summary$quantiles['delta[1]', '97.5%'],
-                                      adjusted_bias_model$summary$quantiles['delta[2]', '97.5%'],
-                                      adjusted_bias_model$summary$quantiles['delta[3]', '97.5%'],
-                                      adjusted_bias_model$summary$quantiles['delta[4]', '97.5%'],
-                                      adjusted_bias_model$summary$quantiles['mu', '97.5%'])
-
 
 ## Forestplot of unadjusted model
 forest(x = estimated_mean_unadjusted_model, 
@@ -117,7 +74,9 @@ forest(x = estimated_mean_unadjusted_model,
        ci.ub = estimated_upper_ci_unadjusted_model,
        xlab = 'Odds Ratio',
        slab = study_name, 
-       pch = c(rep(15,4),18), 
+       #pch = c(rep(15,4),18),
+       pch = c(rep(20,4),18),
+       psize = 1,
        col = c(rep("black",4),"red"),
        header = 'Study',ylim = c(0,13),
        rows = c(10,8,6,4,2))
@@ -129,7 +88,8 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        ci.ub = estimated_upper_ci_unadjusted_model[1:4],
        xlab = 'Log-Odds Ratio',
        slab = study_name[1:4], 
-       pch = rep(15,4), 
+       pch = rep(20,4), 
+       psize = 1,
        col = rep("black",4),
        header = 'Study', ylim = c(0,13),
        rows = c(10,8,6,4))
@@ -142,8 +102,7 @@ addpoly(x = estimated_mean_unadjusted_model[5],
         mlab = "Summary")
 
 ## Result of RBA
-#load('RBA_result_9points_alphas_by_01.Rdata')
-load('RBA_result_9points_alphas_by_01_new.Rdata')
+load('RBA_result_8points_alphas_by_01.Rdata')
 
 RBA_lower_mean_adjusted_model = c(result$output_minimum$summary[1]$statistics['delta[1]', 'Mean'],
                                   result$output_minimum$summary[1]$statistics['delta[2]', 'Mean'],
@@ -207,7 +166,7 @@ text(3, 5, labels = paste0('(',min(round(RBA_lower_mean_adjusted_model[3], 2),
                                    round(RBA_upper_mean_adjusted_model[3],2)),'--',
                            max(round(RBA_lower_mean_adjusted_model[3], 2),
                                round(RBA_upper_mean_adjusted_model[3],2)), ')', ' ',
-                           '[',round(RBA_lower_ci_adjusted_model[3], 2),', ',
+                           '[',round(RBA_lower_ci_adjusted_model[3], 2),'0',', ',
                            round(RBA_upper_ci_adjusted_model[3],2),'0',']'), col = "blue", pos=4, cex=1)
 
 
@@ -218,7 +177,7 @@ polygon(x = c(RBA_lower_ci_adjusted_model[4], RBA_upper_ci_adjusted_model[4]), c
 polygon(x = c(RBA_lower_ci_adjusted_model[4], RBA_lower_ci_adjusted_model[4]), c(2.9,3.1), border = 'blue')
 polygon(x = c(RBA_upper_ci_adjusted_model[4], RBA_upper_ci_adjusted_model[4]), c(2.9,3.1), border = 'blue')
 text(3, 3, labels = paste0('(',min(round(RBA_lower_mean_adjusted_model[4], 2),
-                                   round(RBA_upper_mean_adjusted_model[4],2)),'--',
+                                   round(RBA_upper_mean_adjusted_model[4],2)),'0','--',
                                max(round(RBA_lower_mean_adjusted_model[4], 2),
                                round(RBA_upper_mean_adjusted_model[4],2)), ')', ' ',
                            '[',round(RBA_lower_ci_adjusted_model[4], 2),', ',
@@ -226,10 +185,23 @@ text(3, 3, labels = paste0('(',min(round(RBA_lower_mean_adjusted_model[4], 2),
 
 
 ##Summary
+#polygon(x = c(RBA_lower_ci_adjusted_model[5], RBA_lower_mean_adjusted_model[5], 
+#              RBA_upper_mean_adjusted_model[5], RBA_upper_ci_adjusted_model[5],
+#              RBA_upper_mean_adjusted_model[5], RBA_lower_mean_adjusted_model[5],
+#              RBA_lower_ci_adjusted_model[5]), c(1,1.5,1.5,1,0.5,0.5,1), col = 'blue', border = 'blue')
+
 polygon(x = c(RBA_lower_ci_adjusted_model[5], RBA_lower_mean_adjusted_model[5], 
-              RBA_upper_mean_adjusted_model[5], RBA_upper_ci_adjusted_model[5],
-              RBA_upper_mean_adjusted_model[5], RBA_lower_mean_adjusted_model[5],
-              RBA_lower_ci_adjusted_model[5]), c(1,1.5,1.5,1,0.5,0.5,1), col = 'blue', border = 'blue')
+              RBA_lower_mean_adjusted_model[5], RBA_lower_ci_adjusted_model[5]), 
+        c(1,1.5,0.5,1), col = 'blue', border = 'blue')
+
+polygon(x = c(RBA_lower_mean_adjusted_model[5], RBA_upper_mean_adjusted_model[5], 
+              RBA_upper_mean_adjusted_model[5], RBA_lower_mean_adjusted_model[5]), 
+        c(1.5,1.5,0.5,0.5), col = 'darkblue', border = 'darkblue')
+
+polygon(x = c(RBA_upper_mean_adjusted_model[5], RBA_upper_ci_adjusted_model[5], 
+              RBA_upper_mean_adjusted_model[5], RBA_upper_mean_adjusted_model[5]), 
+        c(1.5,1,0.5,1.5), col = 'blue', border = 'blue')
+
 text(3, 1, labels = paste0('(',round(RBA_lower_mean_adjusted_model[5], 2),'--',
                              round(RBA_upper_mean_adjusted_model[5],2), ')', ' ',
                              '[',round(RBA_lower_ci_adjusted_model[5], 2),', ',
