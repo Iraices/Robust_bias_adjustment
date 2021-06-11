@@ -74,9 +74,8 @@ forest(x = estimated_mean_unadjusted_model,
        ci.ub = estimated_upper_ci_unadjusted_model,
        xlab = 'Odds Ratio',
        slab = study_name, 
-       #pch = c(rep(15,4),18),
-       pch = c(rep(20,4),18),
-       psize = 1,
+       pch = c(rep(3,4),18),
+       psize = 1.5,
        col = c(rep("black",4),"red"),
        header = 'Study',ylim = c(0,13),
        rows = c(10,8,6,4,2))
@@ -88,8 +87,8 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        ci.ub = estimated_upper_ci_unadjusted_model[1:4],
        xlab = 'Log-Odds Ratio',
        slab = study_name[1:4], 
-       pch = rep(20,4), 
-       psize = 1,
+       pch = rep(3,4), 
+       psize = 1.5,
        refline = 0,
        col = rep("black",4),
        header = 'Study', ylim = c(0,14), 
@@ -145,10 +144,10 @@ RBA_upper_ci_adjusted_model = c(result$output_maximum$summary$quantiles['delta[1
 ## Adding the results of RBA to the foresplot
 # Study 1 REFLEX
 polygon(x = c(RBA_lower_mean_adjusted_model[1], RBA_upper_mean_adjusted_model[1],RBA_upper_mean_adjusted_model[1], 
-              RBA_lower_mean_adjusted_model[1]), c(9.9,9.9,10.1,10.1), col = 'lightblue', border = 'lightblue')
+              RBA_lower_mean_adjusted_model[1]), c(9.85,9.85,10.15,10.15), col = 'aquamarine4', border = 'aquamarine4')
 polygon(x = c(RBA_lower_ci_adjusted_model[1], RBA_upper_ci_adjusted_model[1]), c(10,10), border = 'blue')
-polygon(x = c(RBA_lower_ci_adjusted_model[1], RBA_lower_ci_adjusted_model[1]), c(9.9,10.1), border = 'blue')
-polygon(x = c(RBA_upper_ci_adjusted_model[1], RBA_upper_ci_adjusted_model[1]), c(9.9,10.1), border = 'blue')
+polygon(x = c(RBA_lower_ci_adjusted_model[1], RBA_lower_ci_adjusted_model[1]), c(9.85,10.15), border = 'blue')
+polygon(x = c(RBA_upper_ci_adjusted_model[1], RBA_upper_ci_adjusted_model[1]), c(9.85,10.15), border = 'blue')
 text(3, 10, labels = paste0('(', min(round(RBA_lower_mean_adjusted_model[1], 2),
                                     round(RBA_upper_mean_adjusted_model[1],2)),'--',
                                 max(round(RBA_lower_mean_adjusted_model[1], 2),
@@ -158,10 +157,10 @@ text(3, 10, labels = paste0('(', min(round(RBA_lower_mean_adjusted_model[1], 2),
 
 # Study 2 WA16291
 polygon(x = c(RBA_lower_mean_adjusted_model[2], RBA_upper_mean_adjusted_model[2],RBA_upper_mean_adjusted_model[2], 
-              RBA_lower_mean_adjusted_model[2]), c(7.9,7.9,8.1,8.1), col = 'lightblue', border = 'lightblue')
+              RBA_lower_mean_adjusted_model[2]), c(7.85,7.85,8.15,8.15), col = 'aquamarine4', border = 'aquamarine4')
 polygon(x = c(RBA_lower_ci_adjusted_model[2], RBA_upper_ci_adjusted_model[2]), c(8,8), border = 'blue')
-polygon(x = c(RBA_lower_ci_adjusted_model[2], RBA_lower_ci_adjusted_model[2]), c(7.9,8.1), border = 'blue')
-polygon(x = c(RBA_upper_ci_adjusted_model[2], RBA_upper_ci_adjusted_model[2]), c(7.9,8.1), border = 'blue')
+polygon(x = c(RBA_lower_ci_adjusted_model[2], RBA_lower_ci_adjusted_model[2]), c(7.85,8.15), border = 'blue')
+polygon(x = c(RBA_upper_ci_adjusted_model[2], RBA_upper_ci_adjusted_model[2]), c(7.85,8.15), border = 'blue')
 text(3, 8, labels = paste0('(', min(round(RBA_lower_mean_adjusted_model[2], 2),
                                     round(RBA_upper_mean_adjusted_model[2],2)),'--',
                            max(round(RBA_lower_mean_adjusted_model[2], 2),
@@ -172,10 +171,10 @@ text(3, 8, labels = paste0('(', min(round(RBA_lower_mean_adjusted_model[2], 2),
 
 # Study 3 DANCER 
 polygon(x = c(RBA_lower_mean_adjusted_model[3], RBA_upper_mean_adjusted_model[3],
-              RBA_upper_mean_adjusted_model[3], RBA_lower_mean_adjusted_model[3]), c(5.9,5.9,6.1,6.1), col = 'lightblue', border = 'lightblue')
+              RBA_upper_mean_adjusted_model[3], RBA_lower_mean_adjusted_model[3]), c(5.85,5.85,6.15,6.15), col = 'aquamarine4', border = 'aquamarine4')
 polygon(x = c(RBA_lower_ci_adjusted_model[3], RBA_upper_ci_adjusted_model[3]), c(6,6), border = 'blue')
-polygon(x = c(RBA_lower_ci_adjusted_model[3], RBA_lower_ci_adjusted_model[3]), c(5.9,6.1), border = 'blue')
-polygon(x = c(RBA_upper_ci_adjusted_model[3], RBA_upper_ci_adjusted_model[3]), c(5.9,6.1), border = 'blue')
+polygon(x = c(RBA_lower_ci_adjusted_model[3], RBA_lower_ci_adjusted_model[3]), c(5.85,6.15), border = 'blue')
+polygon(x = c(RBA_upper_ci_adjusted_model[3], RBA_upper_ci_adjusted_model[3]), c(5.85,6.15), border = 'blue')
 text(3, 6, labels = paste0('(',min(round(RBA_lower_mean_adjusted_model[3], 2),
                                    round(RBA_upper_mean_adjusted_model[3],2)),'--',
                            max(round(RBA_lower_mean_adjusted_model[3], 2),
@@ -186,10 +185,10 @@ text(3, 6, labels = paste0('(',min(round(RBA_lower_mean_adjusted_model[3], 2),
 
 #Study 4 SERENE
 polygon(x = c(RBA_lower_mean_adjusted_model[4], RBA_upper_mean_adjusted_model[4],
-              RBA_upper_mean_adjusted_model[4], RBA_lower_mean_adjusted_model[4]), c(3.9,3.9,4.1,4.1), col = 'lightblue', border = 'lightblue')
+              RBA_upper_mean_adjusted_model[4], RBA_lower_mean_adjusted_model[4]), c(3.85,3.85,4.15,4.15), col = 'aquamarine4', border = 'aquamarine4')
 polygon(x = c(RBA_lower_ci_adjusted_model[4], RBA_upper_ci_adjusted_model[4]), c(4,4), border = 'blue')
-polygon(x = c(RBA_lower_ci_adjusted_model[4], RBA_lower_ci_adjusted_model[4]), c(3.9,4.1), border = 'blue')
-polygon(x = c(RBA_upper_ci_adjusted_model[4], RBA_upper_ci_adjusted_model[4]), c(3.9,4.1), border = 'blue')
+polygon(x = c(RBA_lower_ci_adjusted_model[4], RBA_lower_ci_adjusted_model[4]), c(3.85,4.15), border = 'blue')
+polygon(x = c(RBA_upper_ci_adjusted_model[4], RBA_upper_ci_adjusted_model[4]), c(3.85,4.15), border = 'blue')
 text(3, 4, labels = paste0('(',min(round(RBA_lower_mean_adjusted_model[4], 2),
                                    round(RBA_upper_mean_adjusted_model[4],2)),'0','--',
                                max(round(RBA_lower_mean_adjusted_model[4], 2),
@@ -210,7 +209,7 @@ polygon(x = c(RBA_lower_ci_adjusted_model[5], RBA_lower_mean_adjusted_model[5],
 
 polygon(x = c(RBA_lower_mean_adjusted_model[5], RBA_upper_mean_adjusted_model[5], 
               RBA_upper_mean_adjusted_model[5], RBA_lower_mean_adjusted_model[5]), 
-        c(1.5,1.5,0.5,0.5), col = 'lightblue', border = 'lightblue')
+        c(1.5,1.5,0.5,0.5), col = 'aquamarine4', border = 'aquamarine4')
 
 polygon(x = c(RBA_upper_mean_adjusted_model[5], RBA_upper_ci_adjusted_model[5], 
               RBA_upper_mean_adjusted_model[5], RBA_upper_mean_adjusted_model[5]), 
