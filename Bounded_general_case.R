@@ -151,7 +151,11 @@ colnames(all_points) <- c('Q1','Q3','Q4')
 ## Remove duplicate points
 my_all_points <- unique(all_points) 
 
+#########################################################################################################
+#########################################################################################################
+## Functions 
 ## q_values must be a dataframe with q (study quality) combinations and 4 columns q1, q2, q3 q4
+
 ## this function estimates bounds on expectations
 estimate_bounds_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_values, 
                                        mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
@@ -207,18 +211,89 @@ estimate_bounds_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_va
               output_maximum = out_max_mu))
 }
 
-###############################
+#########################################################################################################
+## this function estimates bounds on exceedance probability
+
+estimate_bounds_probability_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_values, 
+                                                   mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
+                                                   alpha = 0.01, lambda = 0.01, 
+                                                   n_chains = 2, n_iter = 20000, threshold = 1){
+  
+  num_q_values <- dim(q_values)[1]
+  
+  output <- run.jags('bias_adjusted_model_150121.txt', 
+                     data <- list(n_studies = n_studies, N = sample_size, obs = obs,
+                                  q = c(q_values[1,1], q_values[1,2], q_values[1,3], q_values[1,4]),
+                                  mu_mu = mu_mu, sigma2_mu = sigma2_mu, mu_beta = mu_beta, sigma2_beta = sigma2_beta,
+                                  alpha = alpha, lambda = lambda),
+                     monitor =  c("beta", "sigma2_theta", "mu", "OR", "delta", "p"), 
+                     n.chains = n_chains, burnin = n_iter/2, 
+                     sample = n_iter, method = 'rjags')
+  
+  min_exceeding_prob <- mean(as.mcmc(output, var = 'mu') >= threshold) 
+  max_exceeding_prob <- min_exceeding_prob
+  
+  argmin_q <- c(q_values[1,1], q_values[1,2], q_values[1,3], q_values[1,4])
+  argmax_q <- argmin_q
+  
+  out_min_exceeding_prob <- output
+  out_max_exceeding_prob <- out_min_exceeding_prob
+  
+  for(i in 2:num_q_values){
+    out <- run.jags('bias_adjusted_model_150121.txt', 
+                    data <- list(n_studies = n_studies, N = sample_size, obs = obs,
+                                 q = c(q_values[i,1], q_values[i,2], q_values[i,3], q_values[i,4]),
+                                 mu_mu = mu_mu, sigma2_mu = sigma2_mu, mu_beta = mu_beta, sigma2_beta = sigma2_beta,
+                                 alpha = alpha, lambda = lambda),
+                    monitor =  c("beta", "sigma2_theta", "mu", "OR", "delta", "p"), 
+                    n.chains = n_chains, burnin = n_iter/2, 
+                    sample = n_iter, method = 'rjags')
+    
+    temp_prob = mean(as.mcmc(out, var = 'mu') >= threshold)
+    
+    if(temp_prob < min_exceeding_prob){
+      min_exceeding_prob <- temp_prob
+      argmin_q <- c(q_values[i,1], q_values[i,2], q_values[i,3], q_values[i,4])
+      out_min_exceeding_prob <- out
+    }
+    if(temp_prob > max_exceeding_prob){
+      max_exceeding_prob <- temp_prob
+      argmax_q <- c(q_values[i,1], q_values[i,2], q_values[i,3], q_values[i,4])
+      out_max_exceeding_prob <- out
+    }
+    
+  }
+  
+  return(list(bounds = c(minimum = min_exceeding_prob, maximum = max_exceeding_prob), 
+              q = list(argmin_q = argmin_q, argmax_q = argmax_q), 
+              output_minimum = out_min_exceeding_prob,
+              output_maximum = out_max_exceeding_prob))
+}
+
+#########################################################################################################
+#########################################################################################################
+
 ## Domain 5 and 6
 ## low_val_domain_5 = 0.6
 ## high_val_domain_5 = 1
 ## q_values_domain_5 = matrix(rep(seq(low_val_domain_5, high_val_domain_5, 0.1), 4), ncol = 4)
 ## colnames(q_values_domain_5) = c('Q1','Q2', 'Q3','Q4')
 
+# bounds on expected value 
 result_domain_5 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
                                      q_values = q_values_domain_5, 
                                      mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
                                      alpha = 0.01, lambda = 0.01, 
                                      n_chains = 2, n_iter = 20000)
+
+
+# bounds on exceedance probability
+result_prob_domain_5 <- estimate_bounds_probability_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
+                                                      q_values = q_values_domain_5, 
+                                                      mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
+                                                      alpha = 0.01, lambda = 0.01, 
+                                                      n_chains = 2, n_iter = 20000, threshold = 1)
+
 
 ###############################
 ## Domain 1 and 2
@@ -259,69 +334,5 @@ result_domain_1 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sampl
 
 
 
-#########################################################################################################
-#########################################################################################################
-## this function estimates bounds on excedance probability
+###############################
 
-estimate_bounds_probability_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_values, 
-                                       mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
-                                       alpha = 0.01, lambda = 0.01, 
-                                       n_chains = 2, n_iter = 20000, threshold = 1){
-  
-  num_q_values <- dim(q_values)[1]
-  
-  output <- run.jags('bias_adjusted_model_150121.txt', 
-                     data <- list(n_studies = n_studies, N = sample_size, obs = obs,
-                                  q = c(q_values[1,1], q_values[1,1], q_values[1,2], q_values[1,3]),
-                                  mu_mu = mu_mu, sigma2_mu = sigma2_mu, mu_beta = mu_beta, sigma2_beta = sigma2_beta,
-                                  alpha = alpha, lambda = lambda),
-                     monitor =  c("beta", "sigma2_theta", "mu", "OR", "delta", "p"), 
-                     n.chains = n_chains, burnin = n_iter/2, 
-                     sample = n_iter, method = 'rjags')
-  
-  min_exceeding_prob <- mean(as.mcmc(output, var = 'mu') >= threshold) 
-  max_exceeding_prob <- min_exceeding_prob
-  
-  argmin_q <- c(q_values[1,1], q_values[1,1], q_values[1,2], q_values[1,3])
-  argmax_q <- argmin_q
-  
-  out_min_exceeding_prob <- output
-  out_max_exceeding_prob <- out_min_exceeding_prob
-  
-  for(i in 2:num_q_values){
-    out <- run.jags('bias_adjusted_model_150121.txt', 
-                    data <- list(n_studies = n_studies, N = sample_size, obs = obs,
-                                 q = c(q_values[i,1], q_values[i,1], q_values[i,2], q_values[i,3]),
-                                 mu_mu = mu_mu, sigma2_mu = sigma2_mu, mu_beta = mu_beta, sigma2_beta = sigma2_beta,
-                                 alpha = alpha, lambda = lambda),
-                    monitor =  c("beta", "sigma2_theta", "mu", "OR", "delta", "p"), 
-                    n.chains = n_chains, burnin = n_iter/2, 
-                    sample = n_iter, method = 'rjags')
-    
-    temp_prob = mean(as.mcmc(out, var = 'mu') >= threshold)
-      
-    if(temp_prob < min_exceeding_prob){
-      min_exceeding_prob <- temp_prob
-      argmin_q <- c(q_values[i,1], q_values[i,1], q_values[i,2], q_values[i,3])
-      out_min_exceeding_prob <- out
-    }
-    if(temp_prob > max_exceeding_prob){
-      max_exceeding_prob <- temp_prob
-      argmax_q <- c(q_values[i,1], q_values[i,1], q_values[i,2], q_values[i,3])
-      out_max_exceeding_prob <- out
-    }
-    
-  }
-  
-  return(list(bounds = c(minimum = min_exceeding_prob, maximum = max_exceeding_prob), 
-              q = list(argmin_q = argmin_q, argmax_q = argmax_q), 
-              output_minimum = out_min_exceeding_prob,
-              output_maximum = out_max_exceeding_prob))
-}
-
-
-result_prob <- estimate_bounds_probability_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
-                                     q_values = my_all_points, 
-                                     mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
-                                     alpha = 0.01, lambda = 0.01, 
-                                     n_chains = 2, n_iter = 20000, threshold = 1)
