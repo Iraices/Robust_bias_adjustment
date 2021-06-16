@@ -142,11 +142,11 @@ estimate_bounds_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_va
 #########################################################################################################
 
 ## Domain 5 and 6
-## low_val_domain_5 = 0.6
-## high_val_domain_5 = 1
-## q_values_domain_5 = matrix(rep(seq(low_val_domain_5, high_val_domain_5, 0.1), 4), ncol = 4)
-## colnames(q_values_domain_5) = c('Q1','Q2', 'Q3','Q4')
-## q_values_domain_5 = as.data.frame(q_values_domain_5)
+low_val_domain_5 = 0.6
+high_val_domain_5 = 1
+q_values_domain_5 = matrix(rep(seq(low_val_domain_5, high_val_domain_5, 0.1), 4), ncol = 4)
+colnames(q_values_domain_5) = c('Q1','Q2', 'Q3','Q4')
+q_values_domain_5 = as.data.frame(q_values_domain_5)
 
 results_domain_5 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
                                               q_values = q_values_domain_5, 
@@ -160,10 +160,9 @@ save(results_domain_5, file = 'results_domain_5.RData')
 ##############################################################
 
 ## Domain 1 and 2
-## low_val_domain_1 = 0.1
-## high_val_domain_1 = 1
-## space = length(seq(0.1,1,0.1))
-## q_values_domain_1 = matrix(rep(c(0,0,0,0), 10000), ncol = 4)
+low_val_domain_1 = 0.1
+high_val_domain_1 = 1
+q_values_domain_1 = matrix(rep(c(0,0,0,0), 10000), ncol = 4)
 
 
 vals = seq(0.1,1,0.1)
@@ -180,8 +179,8 @@ for(i in 1:len_vals){
   }
 }
 
-## colnames(q_values_domain_1) = c('Q1','Q2', 'Q3','Q4')
-## q_values_domain_1 = as.data.frame(q_values_domain_1)
+colnames(q_values_domain_1) = c('Q1','Q2', 'Q3','Q4')
+q_values_domain_1 = as.data.frame(q_values_domain_1)
 
 results_domain_1 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
                                               q_values = q_values_domain_1, 
@@ -194,6 +193,66 @@ save(results_domain_1, file = 'results_domain_1.RData')
 #############################################################################
 #############################################################################
 
+## Domain 4
+## The region
+## q1 <= q2 
+## q_1>= 0.1
+## 0.6 <= q_2 <= 1 
+# The vertices of the region are 
+p_1 = c(0.1, 1)
+p_2 = c(0.1, 0.6)
+p_3 = c(0.6, 0.6)
+p_4 = c(1, 1)
+## We are interested in the points inside the region
+
+points_inside_domain4 <- c()
+## points in the convex set
+## \sum_{i = 1}^{nrows} alpha_i * pi  with \sum_{i = 1}^{nrows} alpha_i = 1
+##
+
+alpha_1 <- seq(0,1, by = 0.1)
+L1 <- length(alpha_1)
+
+for(i in 1:L1){
+  alpha_2 <- seq(0,1 - alpha_1[i], by = 0.1)
+  L2 <- length(alpha_2)
+  for(j in 1:L2){
+    alpha_3 <- seq(0,1 - alpha_1[i] - alpha_2[j], by = 0.1)
+    L3 <- length(alpha_3)
+    for(k in 1:L3){
+      alpha_4 <- 1 - alpha_1[i] - alpha_2[j] - alpha_3[k]
+      
+      p <- alpha_1[i] * p_1 + alpha_2[j] * p_2 + alpha_3[k] * p_3 + alpha_4 * p_4
+      if(p[1] >= 0.1& p[1] <= p[2] & p[2] >= 0.6 & p[2] <= 1){
+      
+        points_inside_domain4 <- rbind(points_inside_domain4, p)
+      }
+    }
+  }
+}  
+points_inside_domain4
+
+
+points_inside_domain4 <- as.data.frame(points_inside_domain4, col.rows = NULL)
+## Add q_3 and q_4
+points_inside_domain4$V3 = points_inside_domain4$V2
+points_inside_domain4$V4 = points_inside_domain4$V2
+q_values_domain_4 <- unique(points_inside_domain4) 
+q_values_domain_4
+colnames(q_values_domain_4) <- c('Q1','Q2','Q3','Q4')
+
+## 286 points
+
+results_domain_4 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
+                                               q_values = q_values_domain_4, 
+                                               mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
+                                               alpha = 0.01, lambda = 0.01, 
+                                               n_chains = 2, n_iter = 20000, threshold = 1, percentile = 0.05)
+
+save(results_domain_4, file = 'results_domain_4.RData')
+
+#############################################################################
+#############################################################################
 ## Domain 4
 ## the inequality constraint region Ax < b with x = (x1,x2) is transformed into 
 ## Ax = b with x = (x1,x2,x3,x4,x5,x6)  
