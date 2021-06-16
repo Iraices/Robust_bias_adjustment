@@ -1,7 +1,7 @@
 ## Code for paper applying robust bias adjustment modeling in evidence synthesis.
 ## Plot the meta-analysis
 
-setwd("C:/Ivette/Papers/Paper 3/Code")
+## setwd("C:/Ivette/Papers/Paper 3/Code")
 
 library('rjags')
 library('runjags')
