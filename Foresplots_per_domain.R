@@ -1,7 +1,7 @@
-## Code for paper applying robust bias adjustment modeling in evidence synthesis.
+## Code for paper 'A robust Bayesian bias-adjusted random effects model in evidence synthesis'.
 ## Plot the meta-analysis
 
-## setwd("C:/Ivette/Papers/Paper 3/Code")
+## setwd("")
 
 library('rjags')
 library('runjags')
