@@ -154,7 +154,7 @@ results_domain_5 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
                                               alpha = 0.01, lambda = 0.01, 
                                               n_chains = 2, n_iter = 20000, threshold = 1, percentile = 0.05)
 
-save(results_domain_5, file = 'results_domain_5.RData')
+# save(results_domain_5, file = 'results_domain_5.RData')
 
 ##############################################################
 ##############################################################
@@ -188,7 +188,7 @@ results_domain_1 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
                                               alpha = 0.01, lambda = 0.01, 
                                               n_chains = 2, n_iter = 20000, threshold = 1, percentile = 0.05)
 
-save(results_domain_1, file = 'results_domain_1.RData')
+# save(results_domain_1, file = 'results_domain_1.RData')
 
 #############################################################################
 #############################################################################
@@ -223,7 +223,7 @@ for(i in 1:L1){
       alpha_4 <- 1 - alpha_1[i] - alpha_2[j] - alpha_3[k]
       
       p <- alpha_1[i] * p_1 + alpha_2[j] * p_2 + alpha_3[k] * p_3 + alpha_4 * p_4
-      if(p[1] >= 0.1& p[1] <= p[2] & p[2] >= 0.6 & p[2] <= 1){
+      if(p[1] >= 0.1 & p[1] <= p[2] & p[2] >= 0.6 & p[2] <= 1){
       
         points_inside_domain4 <- rbind(points_inside_domain4, p)
       }
@@ -249,8 +249,156 @@ results_domain_4 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
                                                alpha = 0.01, lambda = 0.01, 
                                                n_chains = 2, n_iter = 20000, threshold = 1, percentile = 0.05)
 
-save(results_domain_4, file = 'results_domain_4.RData')
+# save(results_domain_4, file = 'results_domain_4.RData')
 
 #############################################################################
 #############################################################################
 ## Domain 3
+## The region
+## q3 <= q1 
+## q4 <= q1 
+## q_3 >= 0.1
+## q_4 >= 0.1
+## 0.6 <= q_1 <= 1 
+
+## Ax = b
+A <- matrix(c(-1,1,0,1,0,0,0,0,0,
+              -1,0,1,0,1,0,0,0,0,
+              1,0,0,0,0,1,0,0,0,
+              -1,0,0,0,0,0,1,0,0,
+              0,-1,0, 0,0,0,0,1,0,
+              0,0,-1,0,0,0,0,0,1), nrow = 6, ncol = 9, byrow = TRUE)
+
+b <- c(0, 0, 1,-0.6, -0.1, -0.1)
+
+# combinations of system equations with 6 variables
+extended_number_variables <- 9
+number_of_equations <- 6
+
+comb <- combinations(extended_number_variables, number_of_equations, repeats.allowed = FALSE)
+# number of combinations
+n_comb <- dim(comb)[1]
+
+## Find the points that define the convex set. 
+solutions <- matrix(0, nrow = n_comb, ncol = extended_number_variables)
+
+for(i in 1:n_comb){
+  rank_A <- rankMatrix(A[, c(comb[i,])])[1]
+  rank_Ab <- rankMatrix(cbind(A[, c(comb[i,])],b))[1]
+  nrows <- dim(A)[1]
+  if(rank_A == rank_Ab){
+    if(rank_A == nrows){
+      solutions[i, c(comb[i,])] <- solve(A[, c(comb[i,])], b)
+    }
+    if(rank_A < nrows){
+      solutions[i, c(comb[i,])] <- 'many'
+    }
+  }
+  else{
+    solutions[i,] <- NaN
+  }
+}
+
+solutions
+
+nrows <- dim(solutions)[1]
+n_NaN<- rep(0,nrows)
+
+for(i in 1:nrows){
+  if(is.nan(as.numeric(solutions[i,1]))){
+    n_NaN[i] <- i 
+  }
+  else{
+    n_NaN[i] <- 0
+  }
+}
+
+## These are the vertices of the polyhedron. 
+## We are interested in the values inside the polyhedron
+solutions_unique <- unique(solutions[-c(n_NaN),])
+
+solutions_unique_conditions <- c()
+
+for(i in 1:dim(solutions_unique)[1]){
+  q_1 = solutions_unique[i,][1]
+  q_3 = solutions_unique[i,][2]
+  q_4 = solutions_unique[i,][3]
+  if(q_1 >= 0.6 & q_1 <= 1 & q_3 >= 0.1 & q_3 <= q_1 & q_4 >= 0.1 & q_4 <= 1){
+    solutions_unique_conditions <- rbind(solutions_unique_conditions, solutions_unique[i,])
+  }
+}
+solutions_unique_conditions[,c(1,2,3)]
+
+
+# The vertices of the polyhedron are 
+## (q_1, q_3, q_4)
+v_1 = c(0.6, 0.1, 0.1)
+v_2 = c(1, 0.1, 0.1)
+v_3 = c(0.6, 0.1, 0.6)
+v_4 = c(1, 0.1, 1)
+v_5 = c(0.6, 0.6, 0.1)
+v_6 = c(1, 1, 0.1)
+v_7 = c(0.6, 0.6, 0.6)
+v_8 = c(1, 1, 1)
+## We are interested in the points inside the region
+
+points_inside_domain3 <- c()
+## points in the convex set
+## \sum_{i = 1}^{nrows} alpha_i * pi  with \sum_{i = 1}^{nrows} alpha_i = 1
+##
+
+alpha_1 <- seq(0,1, by = 0.2)
+L1 <- length(alpha_1)
+
+for(i in 1:L1){
+  alpha_2 <- seq(0,1 - alpha_1[i], by = 0.2)
+  L2 <- length(alpha_2)
+  for(j in 1:L2){
+    alpha_3 <- seq(0,1 - alpha_1[i] - alpha_2[j], by = 0.2)
+    L3 <- length(alpha_3)
+    for(k in 1:L3){
+      alpha_4 <- seq(0,1 - alpha_1[i] - alpha_2[j] - alpha_3[k], by = 0.2)
+      L4 <- length(alpha_4)
+      for(m in 1:L4){
+        alpha_5 <- seq(0,1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m], by = 0.2)
+        L5 <- length(alpha_5)
+        for(l in 1:L5){
+          alpha_6 <- seq(0,1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l], by = 0.2)
+          L6 <- length(alpha_6)
+          for(n in 1:L6){
+            alpha_7 <- seq(0,1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l] - alpha_6[n], by = 0.2)
+            L7 <- length(alpha_7)  
+            for(v in 1:L7){
+              alpha_8 <- 1 - alpha_1[i] - alpha_2[j] - alpha_3[k] - alpha_4[m] - alpha_5[l] - alpha_6[n] - alpha_7[v]
+              
+              p <- alpha_1[i]* v_1 + alpha_2[j]* v_2 + alpha_3[k]* v_3 + alpha_4[m]* v_4 +
+                    alpha_5[l]* v_5 + alpha_6[n]* v_6 + alpha_7[v]* v_7 + alpha_8 * v_8
+              
+              if(p[1] >= 0.6 & p[1] <= 1 & p[2] <= p[1] & p[3] <= p[1] & p[2] >= 0.1 & p[3] >= 0.1){
+                points_inside_domain3 <- rbind(points_inside_domain3, p)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+points_inside_domain3 <- as.data.frame(points_inside_domain3, col.rows = NULL)
+colnames(points_inside_domain3) <- c('Q1','Q3','Q4')
+points_inside_domain3$Q2 = points_inside_domain3$Q1 
+points_inside_domain3 = points_inside_domain3[,c('Q1','Q2','Q3','Q4')]
+
+## Remove duplicate points
+q_values_domain_3 <- unique(points_inside_domain3) 
+
+## 746 points
+
+results_domain_3 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
+                                               q_values = q_values_domain_3, 
+                                               mu_mu = 0, sigma2_mu = 10, mu_beta = 0, sigma2_beta = 10, 
+                                               alpha = 0.01, lambda = 0.01, 
+                                               n_chains = 2, n_iter = 20000, threshold = 1, percentile = 0.05)
+
+# save(results_domain_3, file = 'results_domain_3.RData')
