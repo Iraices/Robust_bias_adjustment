@@ -25,7 +25,7 @@ rownames(sample_size) = c('REFLEX', 'WA16291', 'DANCER', 'SERENE')
 
 ## Unadjusted bias model
 
-unadjusted_bias_model <- run.jags('bias_adjusted_model_150121.txt', 
+unadjusted_bias_model <- run.jags('bias_adjusted_model.txt', 
                                   data = list(n_studies = 4,
                                               N = sample_size,
                                               obs = obs,

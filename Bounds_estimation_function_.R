@@ -28,7 +28,7 @@ estimate_bounds_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_va
   
   num_q_values <- dim(q_values)[1]
   
-  output <- run.jags('bias_adjusted_model_150121.txt', 
+  output <- run.jags('bias_adjusted_model.txt', 
                      data <- list(n_studies = n_studies, N = sample_size, obs = obs,
                                   q = c(q_values[1,1], q_values[1,2], q_values[1,3], q_values[1,4]),
                                   mu_mu = mu_mu, sigma2_mu = sigma2_mu, mu_beta = mu_beta, sigma2_beta = sigma2_beta,
@@ -69,7 +69,7 @@ estimate_bounds_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_va
   
   for(i in 2:num_q_values){
     print(i)
-    out <- run.jags('bias_adjusted_model_150121.txt', 
+    out <- run.jags('bias_adjusted_model.txt', 
                     data <- list(n_studies = n_studies, N = sample_size, obs = obs,
                                  q = c(q_values[i,1], q_values[i,2], q_values[i,3], q_values[i,4]),
                                  mu_mu = mu_mu, sigma2_mu = sigma2_mu, mu_beta = mu_beta, sigma2_beta = sigma2_beta,

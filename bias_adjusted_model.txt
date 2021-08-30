@@ -1,0 +1,32 @@
+model {
+	for (i in 1:n_studies){
+  	
+  		obs[i,1] ~ dbinom(p[i,1], N[i,1])
+		logit(p[i,1]) <- beta[i]   ## beta is the log-odds ratio control effect
+    
+    	obs[i,2] ~ dbinom(p[i,2], N[i,2])   
+    	logit(p[i,2]) <- beta[i] + delta[i] ## delta is the treatment effect on log-odds ratio scale 
+               	    
+   	    ## delta[i] <- mu + theta[i] + phi[i]
+
+   	    #theta[i] ~ dnorm(0, prec_theta)
+   	   
+   	    delta[i] ~ dnorm(mu, q[i] * prec_theta)
+	}	
+		
+		## priors
+		for (i in 1:n_studies){
+			beta[i] ~ dnorm(mu_beta, prec_beta) ## represents control effect, a baseline effect
+		}
+		prec_beta <- 1/sigma2_beta
+		
+		mu ~ dnorm(mu_mu, prec_mu)
+		prec_mu = 1/sigma2_mu
+				
+		OR = exp(mu)
+
+		prec_theta ~ dgamma(alpha, lambda)   	
+		sigma2_theta   <- 1 / prec_theta 	
+
+
+}
