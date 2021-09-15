@@ -45,7 +45,7 @@ unadjusted_bias_model
 #######################################################################################
 ## Forestplot
 ## Log Odds ratio
-study_name = c('REFLEX', 'WA16291', 'DANCER', 'SERENE', 'Summary')
+study_name = c('REFLEX', 'WA16291', 'DANCER', 'SERENE', 'Overall effect')
 
 
 estimated_mean_unadjusted_model = c(unadjusted_bias_model$summary$statistics['delta[1]','Mean'],
@@ -76,8 +76,12 @@ forest(x = estimated_mean_unadjusted_model,
        pch = c(rep(3,4),18),
        psize = 1.5,
        col = c(rep("black",4),"red"),
-       header = 'Study',ylim = c(0,13),
+       header = FALSE,
+       alim=c(-0.1,2.5),
+       ylim = c(0,13),
        rows = c(10,8,6,4,2))
+text(-0.97,12, "Study",     pos=4, font=2, cex=.8)
+text(3.4,12, "Estimate [95% PI]",     pos=4, font=2, cex=.8)
 
 #########################################################
 ## Domain 1 and 2
@@ -91,18 +95,21 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        psize = 1.5,
        refline = 0,
        col = rep("black",4),
-       header = 'Study', ylim = c(0,14), 
+       header = FALSE,
+       ylim = c(0,14), 
        alim=c(-0.1,2.5),
        rows = c(11,9,7,5),
        main = "Domain 1 - 2")
+text(-0.97,13, "Study", pos=4, font=2, cex=.8)
+text(3.35,13, "Estimate [95% PI]", pos=4, font=2, cex=.8)
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
               estimated_upper_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5],
               estimated_lower_ci_unadjusted_model[5]), 
         c(2.5,3,2.5,2,2.5), col = 'black', border = 'black')
-text(-1, 2.5, labels = paste0('SUMMARY'), col = "black", pos = 4, cex = 1)
+text(-0.98, 2.5, labels = paste0('OVERALL EFFECT'), col = "black", pos = 4, cex = 1)
 
-text(3.33, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
+text(3.35, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
                            '[',round(estimated_lower_ci_unadjusted_model[5], 2),', ',
                            round(estimated_upper_ci_unadjusted_model[5],2),']'), 
      col = "black", pos=4, cex=1)
@@ -227,18 +234,21 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        psize = 1.5,
        refline = 0,
        col = rep("black",4),
-       header = 'Study', ylim = c(0,14), 
+       header = FALSE,
+       ylim = c(0,14), 
        alim=c(-0.1,2.5),
        rows = c(11,9,7,5),
        main = "Domain 3")
+text(-0.97,13, "Study", pos=4, font=2, cex=.8)
+text(3.35,13, "Estimate [95% PI]", pos=4, font=2, cex=.8)
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
               estimated_upper_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5],
               estimated_lower_ci_unadjusted_model[5]), 
         c(2.5,3,2.5,2,2.5), col = 'black', border = 'black')
-text(-1, 2.5, labels = paste0('SUMMARY'), col = "black", pos = 4, cex = 1)
+text(-0.98, 2.5, labels = paste0('OVERALL EFFECT'), col = "black", pos = 4, cex = 1)
 
-text(3.33, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
+text(3.35, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
                                 '[',round(estimated_lower_ci_unadjusted_model[5], 2),', ',
                                 round(estimated_upper_ci_unadjusted_model[5],2),']'), 
      col = "black", pos=4, cex=1)
@@ -362,18 +372,21 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        psize = 1.5,
        refline = 0,
        col = rep("black",4),
-       header = 'Study', ylim = c(0,14), 
+       header = FALSE,
+       ylim = c(0,14), 
        alim=c(-0.1,2.5),
        rows = c(11,9,7,5),
        main = "Domain 4")
+text(-0.97,13, "Study", pos=4, font=2, cex=.8)
+text(3.35,13, "Estimate [95% PI]", pos=4, font=2, cex=.8)
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
               estimated_upper_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5],
               estimated_lower_ci_unadjusted_model[5]), 
         c(2.5,3,2.5,2,2.5), col = 'black', border = 'black')
-text(-1, 2.5, labels = paste0('SUMMARY'), col = "black", pos = 4, cex = 1)
+text(-0.98, 2.5, labels = paste0('OVERALL EFFECT'), col = "black", pos = 4, cex = 1)
 
-text(3.33, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
+text(3.35, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
                                 '[',round(estimated_lower_ci_unadjusted_model[5], 2),', ',
                                 round(estimated_upper_ci_unadjusted_model[5],2),']'), 
      col = "black", pos=4, cex=1)
@@ -501,18 +514,22 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        psize = 1.5,
        refline = 0,
        col = rep("black",4),
-       header = 'Study', ylim = c(0,14), 
+       header = FALSE, 
+       ylim = c(0,14), 
        alim=c(-0.1,2.5),
        rows = c(11,9,7,5),
        main = "Domain 5 - 6")
+text(-0.97,13, "Study", pos=4, font=2, cex=.8)
+text(3.35,13, "Estimate [95% PI]", pos=4, font=2, cex=.8)
+
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
               estimated_upper_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5],
               estimated_lower_ci_unadjusted_model[5]), 
         c(2.5,3,2.5,2,2.5), col = 'black', border = 'black')
-text(-1, 2.5, labels = paste0('SUMMARY'), col = "black", pos = 4, cex = 1)
+text(-0.98, 2.5, labels = paste0('OVERALL EFFECT'), col = "black", pos = 4, cex = 1)
 
-text(3.33, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
+text(3.35, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
                                 '[',round(estimated_lower_ci_unadjusted_model[5], 2),', ',
                                 round(estimated_upper_ci_unadjusted_model[5],2),']'), 
      col = "black", pos=4, cex=1)
@@ -636,18 +653,22 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        psize = 1.5,
        refline = 0,
        col = rep("black",4),
-       header = 'Study', ylim = c(0,14), 
+       header = FALSE, 
+       ylim = c(0,14), 
        alim=c(-0.1,2.5),
        rows = c(11,9,7,5),
        main = "All domains")
+text(-0.97,13, "Study", pos=4, font=2, cex=.8)
+text(3.35,13, "Estimate [95% PI]", pos=4, font=2, cex=.8)
+
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
               estimated_upper_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5],
               estimated_lower_ci_unadjusted_model[5]), 
         c(2.5,3,2.5,2,2.5), col = 'black', border = 'black')
-text(-1, 2.5, labels = paste0('SUMMARY'), col = "black", pos = 4, cex = 1)
+text(-0.98, 2.5, labels = paste0('OVERALL EFFECT'), col = "black", pos = 4, cex = 1)
 
-text(3.33, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
+text(3.35, 2.5, labels = paste0(round(estimated_mean_unadjusted_model[5], 2), ' ',
                                 '[',round(estimated_lower_ci_unadjusted_model[5], 2),', ',
                                 round(estimated_upper_ci_unadjusted_model[5],2),']'), 
      col = "black", pos=4, cex=1)
@@ -758,3 +779,135 @@ text(3, 1, labels = paste0('(',round(RBA_lower_mean_adjusted_model_all_domains[5
                            round(RBA_upper_ci_adjusted_model_all_domains[5],2),']'), col = "blue", pos=4, cex=1)
 
 
+############################################################################################################
+############################################################################################################
+#########################################################
+## Overall effect per domains 
+
+forest(x = estimated_mean_unadjusted_model[1:4], 
+       ci.lb = estimated_lower_ci_unadjusted_model[1:4], 
+       ci.ub = estimated_upper_ci_unadjusted_model[1:4],
+       xlab = 'Log-Odds Ratio',
+       slab = domains[1:4], 
+       pch = rep(3,4), 
+       psize = 1.5,
+       refline = 0,
+       col = rep("white",4),
+       header = FALSE, 
+       ylim = c(0,12), 
+       alim=c(-0.1,2.5),
+       rows = c(9,7,5,3),
+       main = "Overall effect")
+text(-0.97,11, "Bias Domain", pos=4, font=2, cex=.8)
+text(3.35,11, "Estimate [95% PI]", pos=4, font=2, cex=.8)
+
+
+## Adding the results of RBA to the foresplot
+# Domain 1-2
+
+polygon(x = c(RBA_lower_ci_adjusted_model_D1[5], RBA_lower_mean_adjusted_model_D1[5], 
+              RBA_lower_mean_adjusted_model_D1[5], RBA_lower_ci_adjusted_model_D1[5]), 
+        c(9,9.5,8.5,9), col = 'blue', border = 'blue')
+
+polygon(x = c(RBA_lower_mean_adjusted_model_D1[5], RBA_upper_mean_adjusted_model_D1[5], 
+              RBA_upper_mean_adjusted_model_D1[5], RBA_lower_mean_adjusted_model_D1[5]), 
+        c(9.5,9.5,8.5,8.5), col = 'aquamarine4', border = 'aquamarine4')
+
+polygon(x = c(RBA_upper_mean_adjusted_model_D1[5], RBA_upper_ci_adjusted_model_D1[5], 
+              RBA_upper_mean_adjusted_model_D1[5], RBA_upper_mean_adjusted_model_D1[5]), 
+        c(9.5,9,8.5,9.5), col = 'blue', border = 'blue')
+
+text(3, 9, labels = paste0('(',round(RBA_lower_mean_adjusted_model_D1[5], 2),'--',
+                           round(RBA_upper_mean_adjusted_model_D1[5],2), ')', ' ',
+                           '[',round(RBA_lower_ci_adjusted_model_D1[5], 2),', ',
+                           round(RBA_upper_ci_adjusted_model_D1[5],2),']'), col = "blue", pos=4, cex=1)
+
+text(-0.95, 9, labels = paste0('1-2'), col = "black", pos = 4, cex = 1)
+
+##############
+# Domain 3
+
+polygon(x = c(RBA_lower_ci_adjusted_model_D3[5], RBA_lower_mean_adjusted_model_D3[5], 
+              RBA_lower_mean_adjusted_model_D3[5], RBA_lower_ci_adjusted_model_D3[5]), 
+        c(7,7.5,6.5,7), col = 'blue', border = 'blue')
+
+polygon(x = c(RBA_lower_mean_adjusted_model_D3[5], RBA_upper_mean_adjusted_model_D3[5], 
+              RBA_upper_mean_adjusted_model_D3[5], RBA_lower_mean_adjusted_model_D3[5]), 
+        c(7.5,7.5,6.5,6.5), col = 'aquamarine4', border = 'aquamarine4')
+
+polygon(x = c(RBA_upper_mean_adjusted_model_D3[5], RBA_upper_ci_adjusted_model_D3[5], 
+              RBA_upper_mean_adjusted_model_D3[5], RBA_upper_mean_adjusted_model_D3[5]), 
+        c(7.5,7,6.5,7.5), col = 'blue', border = 'blue')
+
+text(3, 7, labels = paste0('(',round(RBA_lower_mean_adjusted_model_D3[5], 2),'--',
+                           round(RBA_upper_mean_adjusted_model_D3[5],2), ')', ' ',
+                           '[',round(RBA_lower_ci_adjusted_model_D3[5], 2),', ',
+                           round(RBA_upper_ci_adjusted_model_D3[5],2),']'), col = "blue", pos=4, cex=1)
+
+text(-0.95, 7, labels = paste0('3'), col = "black", pos = 4, cex = 1)
+
+
+# Domain 4
+
+polygon(x = c(RBA_lower_ci_adjusted_model_D4[5], RBA_lower_mean_adjusted_model_D4[5], 
+              RBA_lower_mean_adjusted_model_D4[5], RBA_lower_ci_adjusted_model_D4[5]), 
+        c(5,5.5,4.5,5), col = 'blue', border = 'blue')
+
+polygon(x = c(RBA_lower_mean_adjusted_model_D4[5], RBA_upper_mean_adjusted_model_D4[5], 
+              RBA_upper_mean_adjusted_model_D4[5], RBA_lower_mean_adjusted_model_D4[5]), 
+        c(5.5,5.5,4.5,4.5), col = 'aquamarine4', border = 'aquamarine4')
+
+polygon(x = c(RBA_upper_mean_adjusted_model_D4[5], RBA_upper_ci_adjusted_model_D4[5], 
+              RBA_upper_mean_adjusted_model_D4[5], RBA_upper_mean_adjusted_model_D4[5]), 
+        c(5.5,5,4.5,5.5), col = 'blue', border = 'blue')
+
+text(3, 5, labels = paste0('(',round(RBA_lower_mean_adjusted_model_D4[5], 2),'--',
+                           round(RBA_upper_mean_adjusted_model_D4[5],2), ')', ' ',
+                           '[',round(RBA_lower_ci_adjusted_model_D4[5], 2),', ',
+                           round(RBA_upper_ci_adjusted_model_D4[5],2),']'), col = "blue", pos=4, cex=1)
+
+
+text(-0.95, 5, labels = paste0('4'), col = "black", pos = 4, cex = 1)
+
+# Domain 5-6
+
+polygon(x = c(RBA_lower_ci_adjusted_model_D5[5], RBA_lower_mean_adjusted_model_D5[5], 
+              RBA_lower_mean_adjusted_model_D5[5], RBA_lower_ci_adjusted_model_D5[5]), 
+        c(3,3.5,2.5,3), col = 'blue', border = 'blue')
+
+polygon(x = c(RBA_lower_mean_adjusted_model_D5[5], RBA_upper_mean_adjusted_model_D5[5], 
+              RBA_upper_mean_adjusted_model_D5[5], RBA_lower_mean_adjusted_model_D5[5]), 
+        c(3.5,3.5,2.5,2.5), col = 'aquamarine4', border = 'aquamarine4')
+
+polygon(x = c(RBA_upper_mean_adjusted_model_D5[5], RBA_upper_ci_adjusted_model_D5[5], 
+              RBA_upper_mean_adjusted_model_D5[5], RBA_upper_mean_adjusted_model_D5[5]), 
+        c(3.5,3,2.5,3.5), col = 'blue', border = 'blue')
+
+text(3, 3, labels = paste0('(',round(RBA_lower_mean_adjusted_model_D5[5], 2),'--',
+                           round(RBA_upper_mean_adjusted_model_D5[5],2), ')', ' ',
+                           '[',round(RBA_lower_ci_adjusted_model_D5[5], 2),', ',
+                           round(RBA_upper_ci_adjusted_model_D5[5],2),']'), col = "blue", pos=4, cex=1)
+
+
+text(-0.95, 3, labels = paste0('5-6'), col = "black", pos = 4, cex = 1)
+
+
+# Domain all
+polygon(x = c(RBA_lower_ci_adjusted_model_all_domains[5], RBA_lower_mean_adjusted_model_all_domains[5], 
+              RBA_lower_mean_adjusted_model_all_domains[5], RBA_lower_ci_adjusted_model_all_domains[5]), 
+        c(1,1.5,0.5,1), col = 'blue', border = 'blue')
+
+polygon(x = c(RBA_lower_mean_adjusted_model_all_domains[5], RBA_upper_mean_adjusted_model_all_domains[5], 
+              RBA_upper_mean_adjusted_model_all_domains[5], RBA_lower_mean_adjusted_model_all_domains[5]), 
+        c(1.5,1.5,0.5,0.5), col = 'aquamarine4', border = 'aquamarine4')
+
+polygon(x = c(RBA_upper_mean_adjusted_model_all_domains[5], RBA_upper_ci_adjusted_model_all_domains[5], 
+              RBA_upper_mean_adjusted_model_all_domains[5], RBA_upper_mean_adjusted_model_all_domains[5]), 
+        c(1.5,1,0.5,1.5), col = 'blue', border = 'blue')
+
+text(3, 1, labels = paste0('(',round(RBA_lower_mean_adjusted_model_all_domains[5], 2),'--',
+                           round(RBA_upper_mean_adjusted_model_all_domains[5],2), ')', ' ',
+                           '[',round(RBA_lower_ci_adjusted_model_all_domains[5], 2),'0',', ',
+                           round(RBA_upper_ci_adjusted_model_all_domains[5],2),']'), col = "blue", pos=4, cex=1)
+
+text(-0.95, 1, labels = paste0('All'), col = "black", pos = 4, cex = 1)
