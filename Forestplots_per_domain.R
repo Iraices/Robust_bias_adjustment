@@ -10,7 +10,6 @@ library('gtools')
 library('Matrix')
 
 ## Data 
-## n_studies <- 4  ## number of studies
 obs <- matrix(c(10,80,5,17,16,41,16,44), byrow = TRUE, nrow = 4, ncol = 2)
 sample_size <- matrix(c(201,298,40,40,122,122,172,170), byrow = TRUE, nrow = 4, ncol = 2) 
 parameters <- c("beta", "sigma2_theta", "mu", "OR", "delta", "p")
@@ -131,19 +130,19 @@ RBA_upper_mean_adjusted_model_D1 = c(results_domain_1$output_maximum_expectation
                                      results_domain_1$output_maximum_expectation$summary[1]$statistics['delta[4]', 'Mean'],
                                      results_domain_1$output_maximum_expectation$summary[1]$statistics['mu', 'Mean'])
 
-RBA_lower_ci_adjusted_model_D1 = c(results_domain_1$output_minimum_expectation$summary$quantiles['delta[1]', '2.5%'],
-                                   results_domain_1$output_minimum_expectation$summary$quantiles['delta[2]', '2.5%'],
-                                   results_domain_1$output_minimum_expectation$summary$quantiles['delta[3]', '2.5%'],
-                                   results_domain_1$output_minimum_expectation$summary$quantiles['delta[4]', '2.5%'],
-                                   results_domain_1$output_minimum_expectation$summary$quantiles['mu', '2.5%'])
+RBA_lower_ci_adjusted_model_D1 = c(results_domain_1$output_minimum_2_5th_percentile$summary$quantiles['delta[1]', '2.5%'],
+                                   results_domain_1$output_minimum_2_5th_percentile$summary$quantiles['delta[2]', '2.5%'],
+                                   results_domain_1$output_minimum_2_5th_percentile$summary$quantiles['delta[3]', '2.5%'],
+                                   results_domain_1$output_minimum_2_5th_percentile$summary$quantiles['delta[4]', '2.5%'],
+                                   results_domain_1$output_minimum_2_5th_percentile$summary$quantiles['mu', '2.5%'])
 
-RBA_upper_ci_adjusted_model_D1 = c(results_domain_1$output_maximum_expectation$summary$quantiles['delta[1]', '97.5%'],
-                                   results_domain_1$output_maximum_expectation$summary$quantiles['delta[2]', '97.5%'],
-                                   results_domain_1$output_maximum_expectation$summary$quantiles['delta[3]', '97.5%'],
-                                   results_domain_1$output_maximum_expectation$summary$quantiles['delta[4]', '97.5%'],
-                                   results_domain_1$output_maximum_expectation$summary$quantiles['mu', '97.5%'])
+RBA_upper_ci_adjusted_model_D1 = c(results_domain_1$output_maximum_97_5th_percentile$summary$quantiles['delta[1]', '97.5%'],
+                                   results_domain_1$output_maximum_97_5th_percentile$summary$quantiles['delta[2]', '97.5%'],
+                                   results_domain_1$output_maximum_97_5th_percentile$summary$quantiles['delta[3]', '97.5%'],
+                                   results_domain_1$output_maximum_97_5th_percentile$summary$quantiles['delta[4]', '97.5%'],
+                                   results_domain_1$output_maximum_97_5th_percentile$summary$quantiles['mu', '97.5%'])
 
-## Adding the results of RBA to the foresplot
+## Adding the results of RBA to the forestplot
 # Study 1 REFLEX
 polygon(x = c(RBA_lower_mean_adjusted_model_D1[1], RBA_upper_mean_adjusted_model_D1[1],RBA_upper_mean_adjusted_model_D1[1], 
               RBA_lower_mean_adjusted_model_D1[1]), c(9.85,9.85,10.15,10.15), col = 'aquamarine4', border = 'aquamarine4')
@@ -271,19 +270,19 @@ RBA_upper_mean_adjusted_model_D3 = c(results_domain_3$output_maximum_expectation
                                      results_domain_3$output_maximum_expectation$summary[1]$statistics['delta[4]', 'Mean'],
                                      results_domain_3$output_maximum_expectation$summary[1]$statistics['mu', 'Mean'])
 
-RBA_lower_ci_adjusted_model_D3 = c(results_domain_3$output_minimum_expectation$summary$quantiles['delta[1]', '2.5%'],
-                                   results_domain_3$output_minimum_expectation$summary$quantiles['delta[2]', '2.5%'],
-                                   results_domain_3$output_minimum_expectation$summary$quantiles['delta[3]', '2.5%'],
-                                   results_domain_3$output_minimum_expectation$summary$quantiles['delta[4]', '2.5%'],
-                                   results_domain_3$output_minimum_expectation$summary$quantiles['mu', '2.5%'])
+RBA_lower_ci_adjusted_model_D3 = c(results_domain_3$output_minimum_2_5th_percentile$summary$quantiles['delta[1]', '2.5%'],
+                                   results_domain_3$output_minimum_2_5th_percentile$summary$quantiles['delta[2]', '2.5%'],
+                                   results_domain_3$output_minimum_2_5th_percentile$summary$quantiles['delta[3]', '2.5%'],
+                                   results_domain_3$output_minimum_2_5th_percentile$summary$quantiles['delta[4]', '2.5%'],
+                                   results_domain_3$output_minimum_2_5th_percentile$summary$quantiles['mu', '2.5%'])
 
-RBA_upper_ci_adjusted_model_D3 = c(results_domain_3$output_maximum_expectation$summary$quantiles['delta[1]', '97.5%'],
-                                   results_domain_3$output_maximum_expectation$summary$quantiles['delta[2]', '97.5%'],
-                                   results_domain_3$output_maximum_expectation$summary$quantiles['delta[3]', '97.5%'],
-                                   results_domain_3$output_maximum_expectation$summary$quantiles['delta[4]', '97.5%'],
-                                   results_domain_3$output_maximum_expectation$summary$quantiles['mu', '97.5%'])
+RBA_upper_ci_adjusted_model_D3 = c(results_domain_3$output_maximum_97_5th_percentile$summary$quantiles['delta[1]', '97.5%'],
+                                   results_domain_3$output_maximum_97_5th_percentile$summary$quantiles['delta[2]', '97.5%'],
+                                   results_domain_3$output_maximum_97_5th_percentile$summary$quantiles['delta[3]', '97.5%'],
+                                   results_domain_3$output_maximum_97_5th_percentile$summary$quantiles['delta[4]', '97.5%'],
+                                   results_domain_3$output_maximum_97_5th_percentile$summary$quantiles['mu', '97.5%'])
 
-## Adding the results of RBA to the foresplot
+## Adding the results of RBA to the forestplot
 # Study 1 REFLEX
 polygon(x = c(RBA_lower_mean_adjusted_model_D3[1], RBA_upper_mean_adjusted_model_D3[1],
               RBA_upper_mean_adjusted_model_D3[1], 
@@ -411,19 +410,19 @@ RBA_upper_mean_adjusted_model_D4 = c(results_domain_4$output_maximum_expectation
                                      results_domain_4$output_maximum_expectation$summary[1]$statistics['delta[4]', 'Mean'],
                                      results_domain_4$output_maximum_expectation$summary[1]$statistics['mu', 'Mean'])
 
-RBA_lower_ci_adjusted_model_D4 = c(results_domain_4$output_minimum_expectation$summary$quantiles['delta[1]', '2.5%'],
-                                   results_domain_4$output_minimum_expectation$summary$quantiles['delta[2]', '2.5%'],
-                                   results_domain_4$output_minimum_expectation$summary$quantiles['delta[3]', '2.5%'],
-                                   results_domain_4$output_minimum_expectation$summary$quantiles['delta[4]', '2.5%'],
-                                   results_domain_4$output_minimum_expectation$summary$quantiles['mu', '2.5%'])
+RBA_lower_ci_adjusted_model_D4 = c(results_domain_4$output_minimum_2_5th_percentile$summary$quantiles['delta[1]', '2.5%'],
+                                   results_domain_4$output_minimum_2_5th_percentile$summary$quantiles['delta[2]', '2.5%'],
+                                   results_domain_4$output_minimum_2_5th_percentile$summary$quantiles['delta[3]', '2.5%'],
+                                   results_domain_4$output_minimum_2_5th_percentile$summary$quantiles['delta[4]', '2.5%'],
+                                   results_domain_4$output_minimum_2_5th_percentile$summary$quantiles['mu', '2.5%'])
 
-RBA_upper_ci_adjusted_model_D4 = c(results_domain_4$output_maximum_expectation$summary$quantiles['delta[1]', '97.5%'],
-                                   results_domain_4$output_maximum_expectation$summary$quantiles['delta[2]', '97.5%'],
-                                   results_domain_4$output_maximum_expectation$summary$quantiles['delta[3]', '97.5%'],
-                                   results_domain_4$output_maximum_expectation$summary$quantiles['delta[4]', '97.5%'],
-                                   results_domain_4$output_maximum_expectation$summary$quantiles['mu', '97.5%'])
+RBA_upper_ci_adjusted_model_D4 = c(results_domain_4$output_maximum_97_5th_percentile$summary$quantiles['delta[1]', '97.5%'],
+                                   results_domain_4$output_maximum_97_5th_percentile$summary$quantiles['delta[2]', '97.5%'],
+                                   results_domain_4$output_maximum_97_5th_percentile$summary$quantiles['delta[3]', '97.5%'],
+                                   results_domain_4$output_maximum_97_5th_percentile$summary$quantiles['delta[4]', '97.5%'],
+                                   results_domain_4$output_maximum_97_5th_percentile$summary$quantiles['mu', '97.5%'])
 
-## Adding the results of RBA to the foresplot
+## Adding the results of RBA to the forestplot
 # Study 1 REFLEX
 polygon(x = c(RBA_lower_mean_adjusted_model_D4[1], RBA_upper_mean_adjusted_model_D4[1],
               RBA_upper_mean_adjusted_model_D4[1], 
@@ -552,19 +551,19 @@ RBA_upper_mean_adjusted_model_D5 = c(results_domain_5$output_maximum_expectation
                                      results_domain_5$output_maximum_expectation$summary[1]$statistics['delta[4]', 'Mean'],
                                      results_domain_5$output_maximum_expectation$summary[1]$statistics['mu', 'Mean'])
 
-RBA_lower_ci_adjusted_model_D5 = c(results_domain_5$output_minimum_expectation$summary$quantiles['delta[1]', '2.5%'],
-                                   results_domain_5$output_minimum_expectation$summary$quantiles['delta[2]', '2.5%'],
-                                   results_domain_5$output_minimum_expectation$summary$quantiles['delta[3]', '2.5%'],
-                                   results_domain_5$output_minimum_expectation$summary$quantiles['delta[4]', '2.5%'],
-                                   results_domain_5$output_minimum_expectation$summary$quantiles['mu', '2.5%'])
+RBA_lower_ci_adjusted_model_D5 = c(results_domain_5$output_minimum_2_5th_percentile$summary$quantiles['delta[1]', '2.5%'],
+                                   results_domain_5$output_minimum_2_5th_percentile$summary$quantiles['delta[2]', '2.5%'],
+                                   results_domain_5$output_minimum_2_5th_percentile$summary$quantiles['delta[3]', '2.5%'],
+                                   results_domain_5$output_minimum_2_5th_percentile$summary$quantiles['delta[4]', '2.5%'],
+                                   results_domain_5$output_minimum_2_5th_percentile$summary$quantiles['mu', '2.5%'])
 
-RBA_upper_ci_adjusted_model_D5 = c(results_domain_5$output_maximum_expectation$summary$quantiles['delta[1]', '97.5%'],
-                                   results_domain_5$output_maximum_expectation$summary$quantiles['delta[2]', '97.5%'],
-                                   results_domain_5$output_maximum_expectation$summary$quantiles['delta[3]', '97.5%'],
-                                   results_domain_5$output_maximum_expectation$summary$quantiles['delta[4]', '97.5%'],
-                                   results_domain_5$output_maximum_expectation$summary$quantiles['mu', '97.5%'])
+RBA_upper_ci_adjusted_model_D5 = c(results_domain_5$output_maximum_97_5th_percentile$summary$quantiles['delta[1]', '97.5%'],
+                                   results_domain_5$output_maximum_97_5th_percentile$summary$quantiles['delta[2]', '97.5%'],
+                                   results_domain_5$output_maximum_97_5th_percentile$summary$quantiles['delta[3]', '97.5%'],
+                                   results_domain_5$output_maximum_97_5th_percentile$summary$quantiles['delta[4]', '97.5%'],
+                                   results_domain_5$output_maximum_97_5th_percentile$summary$quantiles['mu', '97.5%'])
 
-## Adding the results of RBA to the foresplot
+## Adding the results of RBA to the forestplot
 # Study 1 REFLEX
 polygon(x = c(RBA_lower_mean_adjusted_model_D5[1], RBA_upper_mean_adjusted_model_D5[1],
               RBA_upper_mean_adjusted_model_D5[1], 
@@ -693,19 +692,19 @@ RBA_upper_mean_adjusted_model_all_domains = c(results_all_domains$output_maximum
                                               results_all_domains$output_maximum_expectation$summary[1]$statistics['delta[4]', 'Mean'],
                                               results_all_domains$output_maximum_expectation$summary[1]$statistics['mu', 'Mean'])
 
-RBA_lower_ci_adjusted_model_all_domains = c(results_all_domains$output_minimum_expectation$summary$quantiles['delta[1]', '2.5%'],
-                                            results_all_domains$output_minimum_expectation$summary$quantiles['delta[2]', '2.5%'],
-                                            results_all_domains$output_minimum_expectation$summary$quantiles['delta[3]', '2.5%'],
-                                            results_all_domains$output_minimum_expectation$summary$quantiles['delta[4]', '2.5%'],
-                                            results_all_domains$output_minimum_expectation$summary$quantiles['mu', '2.5%'])
+RBA_lower_ci_adjusted_model_all_domains = c(results_all_domains$output_minimum_2_5th_percentile$summary$quantiles['delta[1]', '2.5%'],
+                                            results_all_domains$output_minimum_2_5th_percentile$summary$quantiles['delta[2]', '2.5%'],
+                                            results_all_domains$output_minimum_2_5th_percentile$summary$quantiles['delta[3]', '2.5%'],
+                                            results_all_domains$output_minimum_2_5th_percentile$summary$quantiles['delta[4]', '2.5%'],
+                                            results_all_domains$output_minimum_2_5th_percentile$summary$quantiles['mu', '2.5%'])
 
-RBA_upper_ci_adjusted_model_all_domains = c(results_all_domains$output_maximum_expectation$summary$quantiles['delta[1]', '97.5%'],
-                                            results_all_domains$output_maximum_expectation$summary$quantiles['delta[2]', '97.5%'],
-                                            results_all_domains$output_maximum_expectation$summary$quantiles['delta[3]', '97.5%'],
-                                            results_all_domains$output_maximum_expectation$summary$quantiles['delta[4]', '97.5%'],
-                                            results_all_domains$output_maximum_expectation$summary$quantiles['mu', '97.5%'])
+RBA_upper_ci_adjusted_model_all_domains = c(results_all_domains$output_maximum_97_5th_percentile$summary$quantiles['delta[1]', '97.5%'],
+                                            results_all_domains$output_maximum_97_5th_percentile$summary$quantiles['delta[2]', '97.5%'],
+                                            results_all_domains$output_maximum_97_5th_percentile$summary$quantiles['delta[3]', '97.5%'],
+                                            results_all_domains$output_maximum_97_5th_percentile$summary$quantiles['delta[4]', '97.5%'],
+                                            results_all_domains$output_maximum_97_5th_percentile$summary$quantiles['mu', '97.5%'])
 
-## Adding the results of RBA to the foresplot
+## Adding the results of RBA to the forestplot
 # Study 1 REFLEX
 polygon(x = c(RBA_lower_mean_adjusted_model_all_domains[1], RBA_upper_mean_adjusted_model_all_domains[1],
               RBA_upper_mean_adjusted_model_all_domains[1], 
@@ -807,7 +806,7 @@ text(3.31,14, "Estimate [95% PI]", pos=4, font=2, cex=.8)
 text(2.63,13, "LB-UB Estimate [LB p2.5; UB p97.5]", col = 'blue', pos=4, font=2, cex=.8)
 
 
-## Adding the results of RBA to the foresplot
+## Adding the results of RBA to the forestplot
 # Domain 1-2
 
 polygon(x = c(RBA_lower_ci_adjusted_model_D1[5], RBA_lower_mean_adjusted_model_D1[5], 
