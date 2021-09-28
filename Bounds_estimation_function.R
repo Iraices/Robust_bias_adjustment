@@ -196,8 +196,8 @@ estimate_bounds_finite_set <- function(n_studies, sample_size, obs, mu_phi, q_va
 #########################################################################################################
 
 ## Domain 5 and 6
-low_val_domain_5 = 0.6
-high_val_domain_5 = 1
+low_val_domain_5 = 0.5
+high_val_domain_5 = 0.95
 q_values_domain_5 = matrix(rep(seq(low_val_domain_5, high_val_domain_5, 0.05), 4), ncol = 4)
 colnames(q_values_domain_5) = c('Q1','Q2', 'Q3','Q4')
 q_values_domain_5 = as.data.frame(q_values_domain_5)
@@ -215,12 +215,12 @@ results_domain_5 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
 
 ## Domain 1 and 2
 low_val_domain_1 = 0.1
-high_val_domain_1 = 1
+high_val_domain_1 = 0.95
 q_values_domain_1 = matrix(rep(c(0,0,0,0), 10000), ncol = 4)
 
 
-vals = seq(0.1,1,0.1)
-len_vals = length(vals)
+vals = seq(0.1,0.95, length.out = 10)
+len_vals = length(vals) #10
 n = 1
 for(i in 1:len_vals){
   for(j in 1:len_vals){
@@ -251,12 +251,12 @@ results_domain_1 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
 ## The region
 ## q_1 <= q_2 
 ## q_1 >= 0.1
-## 0.6 <= q_2 <= 1 
+## 0.5 <= q_2 <= 0.95 
 # The vertices of the region are 
-p_1 = c(0.1, 1)
-p_2 = c(0.1, 0.6)
-p_3 = c(0.6, 0.6)
-p_4 = c(1, 1)
+p_1 = c(0.1, 0.95)
+p_2 = c(0.1, 0.5)
+p_3 = c(0.5, 0.5)
+p_4 = c(0.95, 0.95)
 ## We are interested in the points inside the region
 
 points_inside_domain4 <- c()
@@ -277,7 +277,7 @@ for(i in 1:L1){
       alpha_4 <- 1 - alpha_1[i] - alpha_2[j] - alpha_3[k]
       
       p <- alpha_1[i] * p_1 + alpha_2[j] * p_2 + alpha_3[k] * p_3 + alpha_4 * p_4
-      if(p[1] >= 0.1 & p[1] <= p[2] & p[2] >= 0.6 & p[2] <= 1){
+      if(p[1] >= 0.1 & p[1] <= p[2] & p[2] >= 0.5 & p[2] <= 0.95){
       
         points_inside_domain4 <- rbind(points_inside_domain4, p)
       }
@@ -313,7 +313,7 @@ results_domain_4 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
 ## q_4 <= q_1 
 ## q_3 >= 0.1
 ## q_4 >= 0.1
-## 0.6 <= q_1 <= 1 
+## 0.5 <= q_1 <= 0.95 
 
 ## Ax = b
 A <- matrix(c(-1,1,0,1,0,0,0,0,0,
@@ -323,7 +323,7 @@ A <- matrix(c(-1,1,0,1,0,0,0,0,0,
               0,-1,0, 0,0,0,0,1,0,
               0,0,-1,0,0,0,0,0,1), nrow = 6, ncol = 9, byrow = TRUE)
 
-b <- c(0, 0, 1,-0.6, -0.1, -0.1)
+b <- c(0, 0, 0.95,-0.5, -0.1, -0.1)
 
 # combinations of system equations with 6 variables
 extended_number_variables <- 9
@@ -377,7 +377,7 @@ for(i in 1:dim(solutions_unique)[1]){
   q_1 = solutions_unique[i,][1]
   q_3 = solutions_unique[i,][2]
   q_4 = solutions_unique[i,][3]
-  if(q_1 >= 0.6 & q_1 <= 1 & q_3 >= 0.1 & q_3 <= q_1 & q_4 >= 0.1 & q_4 <= 1){
+  if(q_1 >= 0.5 & q_1 <= 0.95 & q_3 >= 0.1 & q_3 <= q_1 & q_4 >= 0.1 & q_4 <= q_1){
     solutions_unique_conditions <- rbind(solutions_unique_conditions, solutions_unique[i,])
   }
 }
@@ -386,14 +386,14 @@ solutions_unique_conditions[,c(1,2,3)]
 
 # The vertices of the polyhedron are 
 ## (q_1, q_3, q_4)
-v_1 = c(0.6, 0.1, 0.1)
-v_2 = c(1, 0.1, 0.1)
-v_3 = c(0.6, 0.1, 0.6)
-v_4 = c(1, 0.1, 1)
-v_5 = c(0.6, 0.6, 0.1)
-v_6 = c(1, 1, 0.1)
-v_7 = c(0.6, 0.6, 0.6)
-v_8 = c(1, 1, 1)
+v_1 = c(0.5, 0.1, 0.1)
+v_2 = c(0.95, 0.1, 0.1)
+v_3 = c(0.5, 0.1, 0.5)
+v_4 = c(0.95, 0.1, 0.95)
+v_5 = c(0.5, 0.5, 0.1)
+v_6 = c(0.95, 0.95, 0.1)
+v_7 = c(0.5, 0.5, 0.5)
+v_8 = c(0.95, 0.95, 0.95)
 ## We are interested in the points inside the region
 
 points_inside_domain3 <- c()
@@ -428,7 +428,7 @@ for(i in 1:L1){
               p <- alpha_1[i]* v_1 + alpha_2[j]* v_2 + alpha_3[k]* v_3 + alpha_4[m]* v_4 +
                     alpha_5[l]* v_5 + alpha_6[n]* v_6 + alpha_7[v]* v_7 + alpha_8 * v_8
               
-              if(p[1] >= 0.6 & p[1] <= 1 & p[2] <= p[1] & p[3] <= p[1] & p[2] >= 0.1 & p[3] >= 0.1){
+              if(p[1] >= 0.5 & p[1] <= 0.95 & p[2] <= p[1] & p[3] <= p[1] & p[2] >= 0.1 & p[3] >= 0.1){
                 points_inside_domain3 <- rbind(points_inside_domain3, p)
               }
             }
@@ -447,7 +447,7 @@ points_inside_domain3 = points_inside_domain3[,c('Q1','Q2','Q3','Q4')]
 ## Remove duplicate points
 q_values_domain_3 <- unique(points_inside_domain3) 
 
-## 746 points
+## 736 points
 
 results_domain_3 <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
                                                q_values = q_values_domain_3, 
@@ -467,7 +467,7 @@ results_domain_3 <- estimate_bounds_finite_set(n_studies = 4, sample_size = samp
 ## q_3 = q_4
 ## q_1 >= 0.1
 ## q_3 >= 0.1
-## 0.1 <= q_2 <= 1
+## 0.1 <= q_2 <= 0.95
 
 
 ## Ax = b
@@ -478,7 +478,7 @@ A <- matrix(c( 1, -1,  0, 1, 0, 0, 0, 0, 0,
                0,  1,  0, 0, 0, 0, 0, 1, 0,
                0, -1,  0, 0, 0, 0, 0, 0, 1), nrow = 6, ncol = 9, byrow = TRUE)
 
-b <- c(0, -0.1, 0, -0.1, 1, -0.1)
+b <- c(0, -0.1, 0, -0.1, 0.95, -0.1)
 
 # combinations of system equations with 6 variables
 extended_number_variables <- 9
@@ -532,7 +532,7 @@ for(i in 1:dim(solutions_unique)[1]){
   q_1 = solutions_unique[i,][1]
   q_2 = solutions_unique[i,][2]
   q_3 = solutions_unique[i,][3]
-  if(q_1 >= 0.1 & q_1 <= q_2 & q_3 >= 0.1 & q_3 <= q_2 & q_2 >= 0.1 & q_2 <= 1){
+  if(q_1 >= 0.1 & q_1 <= q_2 & q_3 >= 0.1 & q_3 <= q_2 & q_2 >= 0.1 & q_2 <= 0.95){
     solutions_unique_conditions <- rbind(solutions_unique_conditions, solutions_unique[i,])
   }
 }
@@ -542,10 +542,10 @@ solutions_unique_conditions[,c(1,2,3)]
 # The vertices of the polyhedron are 
 ## (q_1, q_2, q_3)
 z_1 = c(0.1, 0.1, 0.1)
-z_2 = c(0.1, 1, 0.1)
-z_3 = c(0.1, 1, 1)
-z_4 = c(1, 1, 0.1)
-z_5 = c(1, 1, 1)
+z_2 = c(0.1, 0.95, 0.1)
+z_3 = c(0.1, 0.95, 0.95)
+z_4 = c(0.95, 0.95, 0.1)
+z_5 = c(0.95, 0.95, 0.95)
 
 ## We are interested in the points inside the region
 
@@ -571,7 +571,7 @@ for(i in 1:L1){
         
         p <- alpha_1[i]* z_1 + alpha_2[j]* z_2 + alpha_3[k]* z_3 + alpha_4[m]* z_4 + alpha_5 * z_5
               
-        if(p[1] >= 0.1 & p[1] <= p[2] & p[3] >= 0.1 & p[3] <= p[2] & p[2] >= 0.1 & p[2] <= 1){
+        if(p[1] >= 0.1 & p[1] <= p[2] & p[3] >= 0.1 & p[3] <= p[2] & p[2] >= 0.1 & p[2] <= 0.95){
           points_inside_all_domains <- rbind(points_inside_all_domains, p)
 
         }
@@ -588,7 +588,7 @@ points_inside_all_domains = points_inside_all_domains[,c('Q1','Q2','Q3','Q4')]
 ## Remove duplicate points
 q_values_all_domains <- unique(points_inside_all_domains) 
 
-## 850 points
+## 839 points
 
 results_all_domains <- estimate_bounds_finite_set(n_studies = 4, sample_size = sample_size, obs = obs, 
                                                q_values = q_values_all_domains, 

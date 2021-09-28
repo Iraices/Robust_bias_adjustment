@@ -241,7 +241,7 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        main = "Domain 3")
 text(-0.97,13, "Study", pos=4, font=2, cex=.8)
 text(3.31,14, "Estimate [95% PI]", pos=4, font=2, cex=.8)
-text(2.63,13, "LB-UB Estimate [LB p2.5; UB p97.5]", col = 'blue', pos=4, font=2, cex=.8)
+text(2.63,13, "LB-UB Estimate [L p2.5; U p97.5]", col = 'blue', pos=4, font=2, cex=.8)
 
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
@@ -381,7 +381,7 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        main = "Domain 4")
 text(-0.97,13, "Study", pos=4, font=2, cex=.8)
 text(3.31,14, "Estimate [95% PI]", pos=4, font=2, cex=.8)
-text(2.63,13, "LB-UB Estimate [LB p2.5; UB p97.5]", col = 'blue', pos=4, font=2, cex=.8)
+text(2.63,13, "LB-UB Estimate [L p2.5; U p97.5]", col = 'blue', pos=4, font=2, cex=.8)
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
               estimated_upper_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5],
@@ -522,7 +522,7 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        main = "Domain 5 - 6")
 text(-0.97,13, "Study", pos=4, font=2, cex=.8)
 text(3.31,14, "Estimate [95% PI]", pos=4, font=2, cex=.8)
-text(2.63,13, "LB-UB Estimate [LB p2.5; UB p97.5]", col = 'blue', pos=4, font=2, cex=.8)
+text(2.63,13, "LB-UB Estimate [L p2.5; U p97.5]", col = 'blue', pos=4, font=2, cex=.8)
 
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
@@ -662,7 +662,7 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        main = "All domains")
 text(-0.97,13, "Study", pos=4, font=2, cex=.8)
 text(3.31,14, "Estimate [95% PI]", pos=4, font=2, cex=.8)
-text(2.63,13, "LB-UB Estimate [LB p2.5; UB p97.5]", col = 'blue', pos=4, font=2, cex=.8)
+text(2.63,13, "LB-UB Estimate [L p2.5; U p97.5]", col = 'blue', pos=4, font=2, cex=.8)
 
 
 polygon(x = c(estimated_lower_ci_unadjusted_model[5], estimated_mean_unadjusted_model[5], 
@@ -803,7 +803,7 @@ forest(x = estimated_mean_unadjusted_model[1:4],
        main = "Overall effect")
 text(-0.97,13, "Bias Domain", pos=4, font=2, cex=.8)
 text(3.31,14, "Estimate [95% PI]", pos=4, font=2, cex=.8)
-text(2.63,13, "LB-UB Estimate [LB p2.5; UB p97.5]", col = 'blue', pos=4, font=2, cex=.8)
+text(2.63,13, "LB-UB Estimate [L p2.5; U p97.5]", col = 'blue', pos=4, font=2, cex=.8)
 
 
 ## Adding the results of RBA to the forestplot
